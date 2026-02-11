@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esettanulmány Sablon - Ultima HILEFT Kezelés</title>
+<style>
+  @media print {
+    body { background: white; padding: 0; }
+    .no-print { display: none !important; }
+    .container { box-shadow: none; margin: 0; width: 100%; max-width: 100%; padding: 10px; }
+    input, textarea, select { border: none !important; background: transparent !important; appearance: none; padding: 0; }
+    .upload-box { border: 1px solid #ddd !important; }
+    .section-title { -webkit-print-color-adjust: exact; background-color: #e8f0fe !important; border-left: 4px solid #2d7dd2 !important; }
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f5f5f5; color: #333; padding: 20px; }
+  
+  .container { max-width: 210mm; margin: 0 auto; background: white; padding: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+  
+  .header { border-bottom: 3px solid #2d7dd2; padding-bottom: 20px; margin-bottom: 30px; }
+  .header h1 { font-size: 24px; color: #0a1628; margin-bottom: 5px; }
+  .header p { color: #666; font-size: 14px; }
+  
+  .section-title { font-size: 16px; font-weight: 600; color: #0a1628; background: #e8f0fe; padding: 8px 12px; margin: 25px 0 15px 0; border-left: 4px solid #2d7dd2; }
+  
+  .info-grid { display: grid; grid-template-columns: 200px 1fr; gap: 12px; margin-bottom: 10px; align-items: center; }
+  label { font-weight: 600; color: #0a1628; font-size: 14px; }
+  
+  input[type="text"], input[type="date"], input[type="number"], select, textarea {
+    width: 100%; padding: 8px; border: 1px solid #e0e0e0; border-radius: 4px; font-family: inherit; font-size: 14px;
+  }
+
+  .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; padding: 5px 0; }
+  .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; }
+
+  .treatment-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+  .treatment-table th, .treatment-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+  .treatment-table th { background: #e8f0fe; font-weight: 600; color: #0a1628; }
+
+  /* Képfeltöltés */
+  .image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .upload-box {
+    aspect-ratio: 3/4; border: 2px dashed #ccc; background: #f9f9f9;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; position: relative; overflow: hidden; transition: 0.3s;
+  }
+  .upload-box:hover { background: #f0f7ff; border-color: #2d7dd2; }
+  .preview-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .placeholder-text { text-align: center; color: #999; font-size: 13px; padding: 10px; }
+
+  .signature-section { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .signature-box { border-top: 2px solid #333; padding-top: 10px; font-size: 12px; color: #666; }
+
+  .print-btn {
+    position: fixed; top: 20px; right: 20px; background: #2d7dd2; color: white;
+    border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer;
+    font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1000;
+  }
+  
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; font-size: 11px; color: #999; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Nyomtatás / Mentés PDF-be</button>
+
+<div class="container">
+  <div class="header">
+    <h1>ESETTANULMÁNY DOKUMENTÁCIÓ</h1>
+    <p>Ultima HILEFT Kezelés | Páciens Nyilvántartás</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">1. Páciens Adatok</div>
+    <div class="info-grid">
+      <label>Páciens azonosító:</label><input type="text">
+      <label>Életkor:</label><input type="number">
+      <label>Bőrtípus (Fitzpatrick):</label>
+      <select>
+        <option value="">Válasszon...</option>
+        <option>I. típus (Nagyon világos)</option>
+        <option>II. típus (Világos)</option>
+        <option>III. típus (Közepes)</option>
+        <option>IV. típus (Barna)</option>
+        <option>V. típus (Sötétbarna)</option>
+        <option>VI. típus (Fekete)</option>
+      </select>
+      <label>Kezelés dátuma:</label><input type="date">
+      <label>Kezelő orvos/szakember:</label><input type="text">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2. Kezelési Terület és Indikáció</div>
+    <div class="info-grid">
+      <label>Kezelési terület:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Teljes arc</label>
+        <label class="checkbox-item"><input type="checkbox"> Állkapocs vonal</label>
+        <label class="checkbox-item"><input type="checkbox"> Homlok</label>
+        <label class="checkbox-item"><input type="checkbox"> Szemkörnyék</label>
+        <label class="checkbox-item"><input type="checkbox"> Nyak</label>
+        <div class="checkbox-item">Egyéb: <input type="text" style="width: 150px;"></div>
+      </div>
+      
+      <label>Fő panasz/cél:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Ráncok csökkentése</label>
+        <label class="checkbox-item"><input type="checkbox"> Bőrfeszesítés</label>
+        <label class="checkbox-item"><input type="checkbox"> Textúrajavítás</label>
+        <label class="checkbox-item"><input type="checkbox"> Kontúrozás</label>
+        <label class="checkbox-item"><input type="checkbox"> Pigmentáció</label>
+        <div class="checkbox-item">Egyéb: <input type="text" style="width: 150px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3. Kezelési Protokoll</div>
+    <table class="treatment-table">
+      <thead>
+        <tr>
+          <th>Technológia</th>
+          <th>Beállítások / Paraméterek</th>
+          <th>Időtartam</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><label class="checkbox-item"><input type="checkbox"> HILEFT (EMS + LED)</label></td>
+          <td>Intenzitás: <input type="text" style="width:50px"> | Program: <input type="text" style="width:80px"></td>
+          <td><input type="text" style="width:50px"> perc</td>
+        </tr>
+        <tr>
+          <td><label class="checkbox-item"><input type="checkbox"> LED Maszk (otthoni)</label></td>
+          <td>Hullámhosszak: 415/605/630/850 nm</td>
+          <td><input type="text" style="width:50px"> perc/nap</td>
+        </tr>
+        <tr>
+          <td><label class="checkbox-item"><input type="checkbox"> Kombinált kezelés</label></td>
+          <td><input type="text"></td>
+          <td><input type="text" style="width:50px"> perc</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="info-grid" style="margin-top: 15px;">
+      <label>Kezelések száma:</label>
+      <div><input type="number" style="width:60px"> alkalom (<input type="number" style="width:60px"> hetente)</div>
+      
+      <label>Otthoni aftercare:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Ultima LED maszk napi <input type="number" style="width:50px"> perc</label>
+        <label class="checkbox-item"><input type="checkbox"> Bőrápolási termékek</label>
+        <label class="checkbox-item">Egyéb: <input type="text" style="width:120px"></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4. Fotódokumentáció</div>
+    <div class="image-grid">
+      <div class="upload-box" onclick="document.getElementById('beforeIn').click()">
+        <img id="beforeImg" class="preview-img">
+        <div id="beforeTxt" class="placeholder-text">📸 <strong>BEFORE</strong><br>(Kattints a beillesztéshez)<br><br>Dátum: <input type="date" onclick="event.stopPropagation()"></div>
+        <input type="file" id="beforeIn" hidden accept="image/*" onchange="preview(this, 'beforeImg', 'beforeTxt')">
+      </div>
+      <div class="upload-box" onclick="document.getElementById('afterIn').click()">
+        <img id="afterImg" class="preview-img">
+        <div id="afterTxt" class="placeholder-text">✨ <strong>AFTER</strong><br>(Kattints a beillesztéshez)<br><br>Dátum: <input type="date" onclick="event.stopPropagation()"></div>
+        <input type="file" id="afterIn" hidden accept="image/*" onchange="preview(this, 'afterImg', 'afterTxt')">
+      </div>
+    </div>
+    
+    <div style="margin-top: 15px;">
+      <strong>Fényképezési paraméterek:</strong>
+      <div class="info-grid" style="margin-top: 8px;">
+        <label>Világítás:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox"> Természetes</label>
+          <label class="checkbox-item"><input type="checkbox"> Studió</label>
+          <label class="checkbox-item"><input type="checkbox"> Vegyes</label>
+        </div>
+        <label>Szög:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox"> Frontális</label>
+          <label class="checkbox-item"><input type="checkbox"> Profil</label>
+          <label class="checkbox-item"><input type="checkbox"> 45°</label>
+          <div class="checkbox-item">Egyéb: <input type="text" style="width:100px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5. Klinikai Eredmények és Megfigyelések</div>
+    <div class="info-grid">
+      <label>Látható változások:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Feszesség javulása</label>
+        <label class="checkbox-item"><input type="checkbox"> Textúra simítása</label>
+        <label class="checkbox-item"><input type="checkbox"> Ragyogás fokozása</label>
+        <label class="checkbox-item"><input type="checkbox"> Kontúr definiálása</label>
+        <label class="checkbox-item"><input type="checkbox"> Ráncok csökkenése</label>
+      </div>
+      
+      <label>Eredmény mértéke:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Enyhe javulás</label>
+        <label class="checkbox-item"><input type="checkbox"> Mérsékelt javulás</label>
+        <label class="checkbox-item"><input type="checkbox"> Jelentős javulás</label>
+        <label class="checkbox-item"><input type="checkbox"> Drámai változás</label>
+      </div>
+      
+      <label>Páciens elégedettsége:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">1 <input type="checkbox"></label>
+        <label class="checkbox-item">2 <input type="checkbox"></label>
+        <label class="checkbox-item">3 <input type="checkbox"></label>
+        <label class="checkbox-item">4 <input type="checkbox"></label>
+        <label class="checkbox-item">5 <input type="checkbox"></label>
+        <span style="font-size: 12px; color: #666;">(1=elégedetlen, 5=nagyon elégedett)</span>
+      </div>
+    </div>
+    
+    <div style="margin-top: 15px;">
+      <label>Részletes megjegyzések:</label>
+      <textarea rows="4" style="margin-top:8px;" placeholder="Tapasztalatok, visszajelzések..."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">6. Mellékhatások és Komplikációk</div>
+    <div class="info-grid">
+      <label>Azonnali reakció:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Nincs</label>
+        <label class="checkbox-item"><input type="checkbox"> Enyhe pirosság</label>
+        <label class="checkbox-item"><input type="checkbox"> Átmeneti duzzanat</label>
+        <div class="checkbox-item">Egyéb: <input type="text" style="width:120px;"></div>
+      </div>
+      
+      <label>Downtime:</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Nincs</label>
+        <label class="checkbox-item"><input type="checkbox"> &lt; 24 óra</label>
+        <label class="checkbox-item"><input type="checkbox"> 1-3 nap</label>
+        <label class="checkbox-item"><input type="checkbox"> Több</label>
+      </div>
+      
+      <label>Egyéb megjegyzés:</label>
+      <input type="text">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">7. Fenntartó Kezelési Terv</div>
+    <div style="background: #fafafa; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+      <p style="font-size: 14px; margin-bottom: 10px;"><strong>Javasolt fenntartó protokoll:</strong></p>
+      <ul style="list-style: none; font-size: 14px;">
+        <li style="margin-bottom: 8px;">• Otthoni LED maszk használat: <input type="number" style="width:50px"> alkalom/hét, <input type="number" style="width:50px"> perc/alkalom</li>
+        <li style="margin-bottom: 8px;">• Klinikai utókezelés: <input type="number" style="width:50px"> hónap múlva</li>
+        <li>• Egyéb ajánlások: <input type="text" style="width: 70%;"></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="signature-section">
+    <div class="signature-box">Kezelő szakember aláírása és pecsétje</div>
+    <div class="signature-box">Dátum: <span id="curDate"></span></div>
+  </div>
+
+  <div class="footer">
+    <p>Ez a dokumentum a páciens kezelési folyamatának része. Bizalmasan kezelendő.</p>
+    <p style="margin-top: 5px;">© Ultima Solution | The Ultimate Beauty</p>
+  </div>
+</div>
+
+<script>
+  // Dátum automatikus kitöltése
+  document.getElementById('curDate').innerText = new Date().toLocaleDateString('hu-HU');
+
+  // Kép előnézet funkció
+  function preview(input, imgId, txtId) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById(imgId);
+        img.src = e.target.result;
+        img.style.display = 'block';
+        document.getElementById(txtId).style.display = 'none';
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
+
+</body>
+</html>
